@@ -198,19 +198,32 @@ int main() {
     cout << "List backward: ";
     list.print_reverse();
 
+    cout << "Inserting node 45 at position 6: ";
+    list.insert_after(46, 6);
+    list.print();
+
+    cout << "Deleting value 45: ";
+    list.delete_val(45);
+    list.print();
+
+    cout << "Inserting node 122 at tail: ";
+    list.push_back(122);
+    list.print();
+
+    cout << "Inserting node 253 at head: ";
+    list.push_front(253);
+    list.print();
+
     cout << "Deleting at position 4: ";
     list.delete_pos(4);
-    cout << "Results: ";
     list.print();
     
     cout << "Deleting the head: ";
     list.pop_front();
-    cout << "Results: ";
     list.print();
 
     cout << "Deleting the tail: ";
     list.pop_back();
-    cout << "Results: ";
     list.print();
 
     cout << "Deleting list, then trying to print.\n";
