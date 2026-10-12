@@ -86,17 +86,45 @@ public:
 
         if (!temp) return; // Value not found
 
-        if (temp->prev) {
-            temp->prev->next = temp->next;
-        } else {
-            head = temp->next; // Deleting the head
+        if (temp->prev) temp->prev->next = temp->next;
+        else head = temp->next; // Deleting the head
+
+        if (temp->next) temp->next->prev = temp->prev;
+        else tail = temp->prev; // Deleting the tail
+
+        delete temp;
+    }
+
+    //Define delete_pos()
+    void delete_pos(int position) {
+        if (position < 0) {
+            cout << "Position must be >= 0." << endl;
+            return;
         }
 
-        if (temp->next) {
-            temp->next->prev = temp->prev;
-        } else {
-            tail = temp->prev; // Deleting the tail
+        Node* temp = head;
+
+        if (!head) return; //Empty list
+        
+        if (head == tail) {
+            head = tail = nullptr;
+            return;
         }
+
+        for (int i = 0; i < position && temp; ++i)
+            temp = temp->next;
+
+        if (!temp) {
+            cout << "Position exceeds list size. Node not deleted.\n";
+            delete temp;
+            return;
+        }
+        
+        if (temp->prev) temp->prev->next = temp->next;
+        else head = temp->next; // Deleting the head
+
+        if (temp->next) temp->next->prev = temp->prev;
+        else tail = temp->prev; // Deleting the tail
 
         delete temp;
     }
@@ -105,10 +133,8 @@ public:
     void pop_front() {
         if (!head) return; // Empty list
         Node* temp = head;
-        if (head == tail) {
-            tail = nullptr;
-            head = nullptr;
-        }
+        if (head == tail)
+            head = tail = nullptr;
         else {
             head = temp->next;
             temp->prev = nullptr;
@@ -120,10 +146,8 @@ public:
     void pop_back() {
         if (!tail) return; // Empty list
         Node* temp = tail;
-        if (tail == head) {
-            tail = nullptr;
-            head = nullptr;
-        }
+        if (tail == head)
+            tail = head = nullptr;
         else
         {
             tail = temp->prev;
@@ -174,6 +198,11 @@ int main() {
     cout << "List backward: ";
     list.print_reverse();
 
+    cout << "Deleting at position 4: ";
+    list.delete_pos(4);
+    cout << "Results: ";
+    list.print();
+    
     cout << "Deleting the head: ";
     list.pop_front();
     cout << "Results: ";
