@@ -101,17 +101,34 @@ public:
         delete temp;
     }
 
+    //Define pop_front()
     void pop_front() {
         if (!head) return; // Empty list
         Node* temp = head;
-        head = head->next;
+        if (head == tail) {
+            tail = nullptr;
+            head = nullptr;
+        }
+        else {
+            head = temp->next;
+            temp->prev = nullptr;
+        }
         delete temp;
     }
 
+    //Define pop_back()
     void pop_back() {
         if (!tail) return; // Empty list
         Node* temp = tail;
-        tail = tail->prev;
+        if (tail == head) {
+            tail = nullptr;
+            head = nullptr;
+        }
+        else
+        {
+            tail = temp->prev;
+            tail->next = nullptr;
+        }
         delete temp;
     }
 
