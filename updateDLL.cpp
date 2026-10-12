@@ -2,14 +2,21 @@
 #include <iostream>
 using namespace std;
 
+//Global constants
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
 
+//Start of the DoublyLinkedList class
 class DoublyLinkedList {
+//Private values & functions
 private:
+    //This will be used for searching nodes through a linked list
     struct Node {
+        //'data' will be used for values
         int data;
+        //Set up prev & next
         Node* prev;
         Node* next;
+        //Also set up a constructor for the node
         Node(int val, Node* p = nullptr, Node* n = nullptr) {
             data = val; 
             prev = p;
@@ -17,66 +24,84 @@ private:
         }
     };
 
+    //Set up head & tail nodes
     Node* head;
     Node* tail;
 
+//Public functions
 public:
-    // constructor
+    //Constructor
     DoublyLinkedList() { head = nullptr; tail = nullptr; }
 
+    //Define push_back()
     void push_back(int value) {
+        //Set up a newNode that will be used for inserting in the tail node
         Node* newNode = new Node(value);
-        if (!tail)  // if there's no tail, the list is empty
+        if (!tail)  //If there's no tail, set both the head & tail as the newNode
             head = tail = newNode;
-        else {
+        else { //Otherwise insert the new value & set it as the tail
             tail->next = newNode;
             newNode->prev = tail;
             tail = newNode;
         }
     }
 
+    //Define push_front()
     void push_front(int value) {
+        //Set up a newNode that will be used for inserting in the head node
         Node* newNode = new Node(value);
-        if (!head)  // if there's no head, the list is empty
+        if (!head)  //If there's no head, set both the head & tail as the newNode
             head = tail = newNode;
-        else {
+        else { //Otherwise insert the new value & set it as the head
             newNode->next = head;
             head->prev = newNode;
             head = newNode;
         }
     }
 
+    //Define insert_after()
     void insert_after(int value, int position) {
+        //If the position is lower than 0, print out a error message & exit the function
         if (position < 0) {
             cout << "Position must be >= 0." << endl;
             return;
         }
 
+        //Define newNode
         Node* newNode = new Node(value);
+        //If the head doesn't exist, set up newNode as the head & tail
         if (!head) {
             head = tail = newNode;
+            //Also return
             return;
         }
 
+        //Set up a temporary node called temp, which'll start from the head
         Node* temp = head;
+        //Loop through the linked list until a certain position is found
         for (int i = 0; i < position && temp; ++i)
             temp = temp->next;
-
+        //If the selected position is beyond the list size, print out an error message & exit
         if (!temp) {
             cout << "Position exceeds list size. Node not inserted.\n";
-            delete newNode;
+            delete newNode; //Delete the newNode for memory safety
             return;
         }
 
+        //Set newNode's next variable equal to temp's next variable
         newNode->next = temp->next;
+        //Set newNode's previous variable as the temp variable
         newNode->prev = temp;
-        if (temp->next)
-            temp->next->prev = newNode;
-        else
-            tail = newNode; // Inserting at the end
+
+        //If the temp->next value exceeded the list, set the prev value of temp->next as the newNode
+        if (temp->next) temp->next->prev = newNode;
+        else tail = newNode; //Otherwise insert it at the end
+
+        //Set up temp->next as the newNode
         temp->next = newNode;
     }
 
+    //Define delete_val()
     void delete_val(int value) {
         if (!head) return; // Empty list
 
@@ -156,9 +181,13 @@ public:
         delete temp;
     }
 
+    //Define print()
     void print() {
+        //Set the current node as the head
         Node* current = head;
+        //If it doesn't exist, return
         if (!current) return;
+        //Loop through the current node list
         while (current) {
             cout << current->data << " ";
             current = current->next;
@@ -166,17 +195,24 @@ public:
         cout << endl;
     }
 
+    //Define print_reverse()
     void print_reverse() {
+        //Set the current node as the tail
         Node* current = tail;
+        //If it doesn't exist, return
         if (!current) return;
+        //Loop through the current node list
         while (current) {
-            cout << current->data << " ";
-            current = current->prev;
+            cout << current->data << " "; //Print out the data
+            current = current->prev; //Go to the previous element
         }
+        //Leave in extra space
         cout << endl;
     }
 
+    //Destructor
     ~DoublyLinkedList() {
+        //This deletes the entire list.
         while (head) {
             Node* temp = head;
             head = head->next;
