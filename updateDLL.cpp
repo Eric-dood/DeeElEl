@@ -77,7 +77,7 @@ public:
         temp->next = newNode;
     }
 
-    void delete_node(int value) {
+    void delete_val(int value) {
         if (!head) return; // Empty list
 
         Node* temp = head;
@@ -98,6 +98,20 @@ public:
             tail = temp->prev; // Deleting the tail
         }
 
+        delete temp;
+    }
+
+    void pop_front() {
+        if (!head) return; // Empty list
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+
+    void pop_back() {
+        if (!tail) return; // Empty list
+        Node* temp = tail;
+        tail = tail->prev;
         delete temp;
     }
 
@@ -142,6 +156,16 @@ int main() {
 
     cout << "List backward: ";
     list.print_reverse();
+
+    cout << "Deleting the head: ";
+    list.pop_front();
+    cout << "Results: ";
+    list.print();
+
+    cout << "Deleting the tail: ";
+    list.pop_back();
+    cout << "Results: ";
+    list.print();
 
     cout << "Deleting list, then trying to print.\n";
     list.~DoublyLinkedList();
